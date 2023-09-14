@@ -1,0 +1,56 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: postgres-boundary
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      db: postgres-boundary
+  template:
+    metadata:
+      labels:
+        db: postgres-boundary
+    spec:
+      containers:
+      - name: postgres-boundary
+        image: postgres:12
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 500m
+            memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 512Mi
+        ports:
+        - name: db
+          containerPort: 5432
+        envFrom:
+        - configMapRef:
+            name: postgres-configmap
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 5432
+            scheme: HTTP
+          initialDelaySeconds: 300
+          timeoutSeconds: 10
+          periodSeconds: 300
+          successThreshold: 1
+          failureThreshold: 5
+        volumeMounts:
+        - name: database-postgres
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: database-postgres
+        hostPath:
+          path: /home/docker/volumes/postgres-boundary
+          type: DirectoryOrCreate
