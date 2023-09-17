@@ -1,7 +1,7 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: postgres-boundary
+  name: boundary-postgres
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -13,15 +13,15 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      db: postgres-boundary
+      db: boundary-postgres
   template:
     metadata:
       labels:
-        db: postgres-boundary
+        db: boundary-postgres
     spec:
       containers:
-      - name: postgres-boundary
-        image: postgres:12
+      - name: boundary-postgres
+        image: boundary-postgres
         imagePullPolicy: Always
         resources:
           requests:
@@ -35,22 +35,12 @@ spec:
           containerPort: 5432
         envFrom:
         - configMapRef:
-            name: postgres-configmap
-        livenessProbe:
-          httpGet:
-            path: /
-            port: 5432
-            scheme: HTTP
-          initialDelaySeconds: 300
-          timeoutSeconds: 10
-          periodSeconds: 300
-          successThreshold: 1
-          failureThreshold: 5
+            name: boundary-postgres-configmap
         volumeMounts:
-        - name: database-postgres
+        - name: postgres-db-boundary
           mountPath: /var/lib/postgresql/data
       volumes:
-      - name: database-postgres
+      - name: postgres-db-boundary
         hostPath:
           path: /home/docker/volumes/postgres-boundary
           type: DirectoryOrCreate

@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: boundary-controller-ingress
+spec:
+  rules:
+  - host: boundary.svc.dionathan.apps
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: boundary-controller-svc
+            port:
+              number: 9200

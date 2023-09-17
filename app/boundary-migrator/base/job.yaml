@@ -19,10 +19,10 @@ spec:
       dnsPolicy: ClusterFirst
       containers:
       - name: boundary-migrator
-        image: hashicorp/boundary
+        image: boundary-migrator
         envFrom:
         - secretRef:
-            name: boundary-secret
+            name: boundary-migrator-secret
         command:
         - boundary
         - database
