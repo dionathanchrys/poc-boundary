@@ -24,22 +24,19 @@ spec:
         image: boundary-controller
         imagePullPolicy: Always
         resources:
-          requests:
-            cpu: 500m
-            memory: 512Mi
           limits:
-            cpu: 1000m
-            memory: 512Mi
+            cpu: 1
+            memory: 1Gi
         envFrom:
         - secretRef:
             name: boundary-controller-secret
+        - configMapRef:
+            name: boundary-controller-configmap
         ports:
         - name: api
           containerPort: 9200
         - name: cluster
           containerPort: 9201
-        - name: proxy
-          containerPort: 9202
         livenessProbe:
           httpGet:
             path: /
@@ -60,3 +57,11 @@ spec:
         #   periodSeconds: 300
         #   successThreshold: 1
         #   failureThreshold: 5
+        volumeMounts:
+        - name: boundary-controller-config
+          mountPath: /boundary/config.hcl
+          subPath: config.hcl
+      volumes:
+      - name: boundary-controller-config
+        configMap:
+          name: boundary-controller-configmap

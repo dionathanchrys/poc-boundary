@@ -3,18 +3,17 @@ kind: Service
 metadata:
   name: boundary-controller-svc
 spec:
+  type: NodePort
   ports:
   - port: 9200
     name: api
     targetPort: 9200
     protocol: TCP
+    nodePort: 32200
   - port: 9201
     name: cluster
     targetPort: 9201
     protocol: TCP
-  - port: 9202
-    name: proxy
-    targetPort: 9202
-    protocol: TCP
+    nodePort: 32201
   selector:
     app: boundary-controller

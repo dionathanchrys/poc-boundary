@@ -9,12 +9,12 @@ bases:
 commonLabels:
   app.kubernetes.io/instance: service
 
-secretGenerator:
-- name: boundary-migrator-secret
-  literals:
-  - BOUNDARY_POSTGRES_URL=postgresql://boundary:Password!123@boundary-postgres-svc:5432/postgres?sslmode=disable
+configMapGenerator:
+- name: boundary-worker-configmap
+  files:
+  - config/pki-worker.hcl
 
 images:
-- name: boundary-migrator
+- name: boundary-worker
   newTag: '0.13.1'
   newName: hashicorp/boundary

@@ -10,10 +10,6 @@ nodes:
     nodeRegistration:
       kubeletExtraArgs:
         node-labels: "ingress-ready=true"
-  # extraPortMappings:
-  # - containerPort: 80
-  #   hostPort: 80
-  #   protocol: TCP
   extraMounts:
   - hostPath: ~/$USER/kind-volumes
     containerPath: /home/docker/volumes/prd

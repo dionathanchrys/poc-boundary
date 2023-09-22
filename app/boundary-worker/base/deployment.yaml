@@ -1,0 +1,53 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: boundary-worker
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: boundary-worker
+  template:
+    metadata:
+      labels:
+        app: boundary-worker
+    spec:
+      containers:
+      - name: boundary-worker
+        image: boundary-worker
+        imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: 1
+            memory: 1Gi
+        envFrom:
+        - configMapRef:
+            name: boundary-worker-configmap
+        ports:
+        - name: proxy
+          containerPort: 9202
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 9202
+            scheme: HTTP
+          initialDelaySeconds: 300
+          timeoutSeconds: 10
+          periodSeconds: 300
+          successThreshold: 1
+          failureThreshold: 5
+        volumeMounts:
+        - name: boundary-worker-config
+          mountPath: /boundary/config.hcl
+          subPath: pki-worker.hcl
+      volumes:
+      - name: boundary-worker-config
+        configMap:
+          name: boundary-worker-configmap
