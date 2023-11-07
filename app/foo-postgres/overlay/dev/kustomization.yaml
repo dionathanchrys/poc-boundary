@@ -1,19 +1,19 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: dev-foo-app
+namespace: foo-app
 
 bases:
 - ../../base/
 
 commonLabels:
-  app.kubernetes.io/instance: development
+  app.kubernetes.io/environment: development
 
 configMapGenerator:
 - name: foo-postgres-configmap
   literals:
   - POSTGRES_USER=foo-app
-  - POSTGRES_PASSWORD=Password!456
+  - POSTGRES_PASSWORD=Password@dev
 
 images:
 - name: foo-postgres

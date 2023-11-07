@@ -3,4 +3,4 @@ kind: Namespace
 metadata:
   name: foo-app
   labels:
-    kubernetes.io/environment: "Production"
+    app.kubernetes.io/environment: production

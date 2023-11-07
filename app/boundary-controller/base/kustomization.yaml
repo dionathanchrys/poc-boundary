@@ -3,7 +3,7 @@ kind: Kustomization
 
 resources:
 - deployment.yaml
-#- hpa.yaml
+- hpa.yaml
 - service.yaml
 
 commonLabels:

@@ -10,6 +10,3 @@ nodes:
     nodeRegistration:
       kubeletExtraArgs:
         node-labels: "ingress-ready=true"
-  extraMounts:
-  - hostPath: ~/$USER/kind-volumes
-    containerPath: /home/docker/volumes/dev

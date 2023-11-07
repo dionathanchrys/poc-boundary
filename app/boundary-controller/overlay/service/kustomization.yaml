@@ -7,7 +7,7 @@ bases:
 - ../../base/
 
 commonLabels:
-  app.kubernetes.io/instance: service
+  app.kubernetes.io/environment: service
 
 secretGenerator:
 - name: boundary-controller-secret
