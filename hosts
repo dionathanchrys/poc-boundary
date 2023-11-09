@@ -1,0 +1,5 @@
+127.0.0.1       localhost
+
+192.168.222.10  boundary.services.dionathan.apps
+192.168.222.20  boundary.dev.dionathan.apps
+192.168.222.30  boundary.dionathan.apps
