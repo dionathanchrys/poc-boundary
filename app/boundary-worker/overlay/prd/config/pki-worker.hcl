@@ -11,8 +11,8 @@ listener "tcp" {
 # worker service
 worker {
   name              = "prd-worker"
-  public_addr       = "boundary.dionathan.apps:32202"
-  initial_upstreams = ["boundary.services.dionathan.apps:32201"]
+  public_addr       = "192.168.222.30:32202"
+  initial_upstreams = ["192.168.222.10:32201"]
   # auth_storage_path = "/boundary/auth_storage/"
   tags {
     env  = ["prd"]

@@ -11,8 +11,8 @@ listener "tcp" {
 # worker service
 worker {
   name              = "service-worker"
-  public_addr       = "boundary.services.dionathan.apps:32202"
-  initial_upstreams = ["boundary.services.dionathan.apps:32201"]
+  public_addr       = "192.168.222.10:32202"
+  initial_upstreams = ["192.168.222.10:32201"]
   # auth_storage_path = "/boundary/auth_storage/"
   tags {
     env  = ["services"]

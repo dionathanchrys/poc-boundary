@@ -22,7 +22,7 @@ controller {
     url = "env://BOUNDARY_POSTGRES_URL"
   }
 
-  public_cluster_addr = "boundary.services.dionathan.apps:32201"
+  public_cluster_addr = "192.168.222.10:32201"
 }
 
 # worker {

@@ -19,6 +19,9 @@ configMapGenerator:
   files:
   - config/config.hcl
 
+# resources:
+# - ingress.yaml
+
 images:
 - name: boundary-controller
   newTag: '0.13.1'
