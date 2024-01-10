@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: boundary
+
+bases:
+- ../../base/
+
+commonLabels:
+  app.kubernetes.io/environment: production
+
+configMapGenerator:
+- name: boundary-worker-configmap
+  files:
+  - config/pki-worker.hcl
+
+images:
+- name: boundary-worker
+  newTag: '0.13.1'
+  newName: hashicorp/boundary

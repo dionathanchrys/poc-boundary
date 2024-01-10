@@ -1,7 +1,7 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: boundary-controller
+  name: boundary-worker
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -13,15 +13,15 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      app: boundary-controller
+      app: boundary-worker
   template:
     metadata:
       labels:
-        app: boundary-controller
+        app: boundary-worker
     spec:
       containers:
-      - name: boundary-controller
-        image: boundary-controller
+      - name: boundary-worker
+        image: boundary-worker
         imagePullPolicy: Always
         resources:
           requests:
@@ -31,40 +31,26 @@ spec:
             cpu: 1
             memory: 1Gi
         envFrom:
-        - secretRef:
-            name: boundary-controller-secret
         - configMapRef:
-            name: boundary-controller-configmap
+            name: boundary-worker-configmap
         ports:
-        - name: api
-          containerPort: 9200
-        - name: cluster
-          containerPort: 9201
+        - name: proxy
+          containerPort: 9202
         livenessProbe:
           httpGet:
             path: /
-            port: 9200
+            port: 9202
             scheme: HTTP
           initialDelaySeconds: 300
           timeoutSeconds: 10
           periodSeconds: 300
           successThreshold: 1
           failureThreshold: 5
-        # readinessProbe:
-        #   httpGet:
-        #     path: /
-        #     port: 9200
-        #     scheme: HTTP
-        #   initialDelaySeconds: 300
-        #   timeoutSeconds: 10
-        #   periodSeconds: 300
-        #   successThreshold: 1
-        #   failureThreshold: 5
         volumeMounts:
-        - name: boundary-controller-config
+        - name: boundary-worker-config
           mountPath: /boundary/config.hcl
-          subPath: config.hcl
+          subPath: pki-worker.hcl
       volumes:
-      - name: boundary-controller-config
+      - name: boundary-worker-config
         configMap:
-          name: boundary-controller-configmap
+          name: boundary-worker-configmap

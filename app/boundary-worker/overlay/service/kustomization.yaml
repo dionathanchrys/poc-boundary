@@ -10,12 +10,11 @@ commonLabels:
   app.kubernetes.io/environment: service
 
 configMapGenerator:
-- name: boundary-postgres-configmap
-  literals:
-  - POSTGRES_USER=boundary
-  - POSTGRES_PASSWORD=Password!123
+- name: boundary-worker-configmap
+  files:
+  - config/pki-worker.hcl
 
 images:
-- name: boundary-postgres
-  newTag: '12'
-  newName: postgres
+- name: boundary-worker
+  newTag: '0.13.1'
+  newName: hashicorp/boundary

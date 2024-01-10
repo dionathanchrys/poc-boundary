@@ -7,17 +7,22 @@ bases:
 - ../../base/
 
 commonLabels:
-  app.kubernetes.io/instance: service
+  app.kubernetes.io/environment: service
 
 secretGenerator:
 - name: boundary-controller-secret
   literals:
   - BOUNDARY_POSTGRES_URL=postgresql://boundary:Password!123@boundary-postgres-svc:5432/postgres?sslmode=disable
 
+configMapGenerator:
+- name: boundary-controller-configmap
+  files:
+  - config/config.hcl
+
+# resources:
+# - ingress.yaml
+
 images:
 - name: boundary-controller
-  newTag: latest
+  newTag: '0.13.1'
   newName: hashicorp/boundary
-
-resources:
-- ingress.yaml
